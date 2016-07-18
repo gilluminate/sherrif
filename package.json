@@ -1,6 +1,6 @@
 {
   "name": "sherrif",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Easily manage jailed SFTP users with www access.",
   "main": "index.js",
   "repository": {
