@@ -1,0 +1,21 @@
+{
+  "name": "sherrif",
+  "version": "0.0.1",
+  "description": "Easily manage jailed SFTP users with www access.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gilluminate/sherrif.git"
+  },
+  "keywords": [
+    "sftp",
+    "jail",
+    "chroot"
+  ],
+  "author": "Jason Gill",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gilluminate/sherrif/issues"
+  },
+  "homepage": "https://github.com/gilluminate/sherrif#readme"
+}
