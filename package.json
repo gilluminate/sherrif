@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/gilluminate/sherrif/issues"
   },
-  "homepage": "https://github.com/gilluminate/sherrif#readme"
+  "homepage": "https://github.com/gilluminate/sherrif#readme",
+  "dependencies": {
+    "prompt": "^1.0.0"
+  }
 }
