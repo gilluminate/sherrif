@@ -1,5 +1,6 @@
 var prompt = require('prompt');
 var execFileSync = require('child_process').execFileSync;
+var spawnSync = require('child_process').spawnSync;
 var colors = require("colors/safe");
 var filessystem = require('fs');
 
@@ -53,13 +54,13 @@ function validate(username){
 
 function newUser(newname){
     console.log("Creating jailed user "+colors.yellow(newname)+"...");
-    execFileSync('adduser', [newname, '--ingroup sftponly', '--shell /bin/false']);
+    spawnSync('adduser', [newname, '--ingroup', 'sftponly', '--shell', '/bin/false'], { stdio: "inherit", stdin: "inherit" });
     filessystem.mkdirSync("/home/"+newname+"/www");
-    execFileSync('chown', ['-R root:root /home/'+newname]);
+    execFileSync('chown', ['-R', 'root:root', '/home/'+newname]);
     filessystem.mkdirSync("/var/www/jailed/"+newname);
     filessystem.mkdirSync("/var/www/jailed/"+newname+"/www");
-    execFileSync('chown', ['-R '+newname+':sftponly /var/www/jailed/'+newname+'/www']);
-    execFileSync('mount', ['--bind /var/www/jailed/$username/www /home/$username/www']);
+    execFileSync('chown', ['-R', newname+':sftponly', '/var/www/jailed/'+newname+'/www']);
+    execFileSync('mount', ['--bind', '/var/www/jailed/'+newname+'/www', '/home/'+newname+'/www']);
     filessystem.appendFileSync('/etc/fstab', "/var/www/jailed/"+newname+"/www /home/"+newname+"/www    none    bind");
     console.log("Done.");
 }
@@ -80,7 +81,6 @@ function removeCheck(oldname){
 }
 
 function removeUser(oldname){
-    console.log("Removing jailed user "+colors.yellow(oldname)+"...");
     execFileSync('umount', ['/home/'+oldname+'/www']);
     var backupPrompt = {
         name: 'backup',
@@ -90,14 +90,16 @@ function removeUser(oldname){
         default: 'yes'
     };
     prompt.get(backupPrompt, function (err, result) {
-        if(result.yesno.indexOf('y')>-1){
-            execFileSync('deluser', [oldname, '--remove-home  --remove-all-files', '--backup --backup-to ~/user_backups']);
+        console.log("Removing jailed user "+colors.yellow(oldname)+"...");
+        if(result.backup.indexOf('y')>-1){
+            execFileSync('deluser', [oldname, '--remove-all-files', '--backup', '--backup-to', '~/user_backups']);
         } else {
-            execFileSync('deluser', [oldname, '--remove-home  --remove-all-files']);
+            execFileSync('deluser', [oldname, '--remove-all-files']);
         }
-        // execFileSync('rm', ['-rf', '/var/www/jailed/'+oldname+'/']);
+	execFileSync('rm', ['-rf', '/home/'+oldname+'/']);
+        console.log(colors.blue("Remember to remove mount from /etc/fstab."));
+        console.log("Done.");
+        execFileSync('rm', ['-rf', '/var/www/jailed/'+oldname+'/']);
     });
-    console.log(colors.blue("Remember to remove mount from /etc/fstab."));
-    console.log("Done.");
 }
 
