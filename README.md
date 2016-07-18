@@ -22,17 +22,17 @@ Match Group sftponly
   X11Forwarding no
 ```
 
-1. Now restart the sshd service
+3. Now restart the sshd service
 ```
 sudo systemctl restart sshd.service
 ```
 
-1. Create a new directory called `jailed` in `/var/www/`. This is where Sherrif will create new directories for your jailed users to access. Eventually, you will need to point virtual hosts to the `www` directory(ies) created here (Sherrif won't complete that part of the opperation for you).
+4. Create a new directory called `jailed` in `/var/www/`. This is where Sherrif will create new directories for your jailed users to access. Eventually, you will need to point virtual hosts to the `www` directory(ies) created here (Sherrif won't complete that part of the opperation for you).
 ```
 sudo mkdir /var/www/jailed/
 ```
 
-1. Create a new directory called `user_backups` in your home directory. This is where removed users' data will be compressed and stored when deleted from the system. If you don't care to back up old users, you may skip this step.
+5. Create a new directory called `user_backups` in your home directory. This is where removed users' data will be compressed and stored when deleted from the system. If you don't care to back up old users, you may skip this step.
 
 ## Usage
 Simply run `sudo node index.js` and follow the prompts.
