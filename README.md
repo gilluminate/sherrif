@@ -8,29 +8,29 @@ Sherrif is a node.js application. Assumptions are that [node](https://www.digita
 ## Configuration
 
 1. First, we need to create the sftponly group
-```
-sudo groupadd sftponly
-```
+    ```
+    sudo groupadd sftponly
+    ```
 
 1. Next, we configure permissions for the `sftponly` group. Add the following at the bottom of the `/etc/ssh/sshd_config` file as sudo user.
-```
-Match Group sftponly
-  ChrootDirectory %h
-  ForceCommand internal-sftp
-  AllowTcpForwarding no
-  PermitTunnel no
-  X11Forwarding no
-```
+    ```
+    Match Group sftponly
+      ChrootDirectory %h
+      ForceCommand internal-sftp
+      AllowTcpForwarding no
+      PermitTunnel no
+      X11Forwarding no
+    ```
 
 3. Now restart the sshd service
-```
-sudo systemctl restart sshd.service
-```
+    ```
+    sudo systemctl restart sshd.service
+    ```
 
 4. Create a new directory called `jailed` in `/var/www/`. This is where Sherrif will create new directories for your jailed users to access. Eventually, you will need to point virtual hosts to the `www` directory(ies) created here (Sherrif won't complete that part of the opperation for you).
-```
-sudo mkdir /var/www/jailed/
-```
+    ```
+    sudo mkdir /var/www/jailed/
+    ```
 
 5. Create a new directory called `user_backups` in your home directory. This is where removed users' data will be compressed and stored when deleted from the system. If you don't care to back up old users, you may skip this step.
 
